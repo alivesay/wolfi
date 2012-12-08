@@ -5,6 +5,7 @@
   action scheme     { RFC3986_SET_INDEX(scheme,   mark, fpc); }
   action userinfo   { RFC3986_SET_INDEX(userinfo, mark, fpc); }
   action host       { RFC3986_SET_INDEX(host,     mark, fpc); }
+  action port       { RFC3986_SET_INDEX(port,     mark, fpc); }
   action path       { RFC3986_SET_INDEX(path,     mark, fpc); }
   action query      { RFC3986_SET_INDEX(query,    mark, fpc); }
   action fragment   { RFC3986_SET_INDEX(fragment, mark, fpc); }
@@ -23,6 +24,7 @@ typedef struct {
   char *scheme;        size_t scheme_len;
   char *userinfo;      size_t userinfo_len;
   char *host;          size_t host_len;
+  char *port;          size_t port_len;
   char *path;          size_t path_len;
   char *query;         size_t query_len;
   char *fragment;      size_t fragment_len;
@@ -51,6 +53,7 @@ void rfc3986_dump(rfc3986_index_t *p_rfc3986_i) {
   RFC3986_DUMP_KEY(scheme);
   RFC3986_DUMP_KEY(userinfo);
   RFC3986_DUMP_KEY(host);
+  RFC3986_DUMP_KEY(port);
   RFC3986_DUMP_KEY(path);
   RFC3986_DUMP_KEY(query);
   RFC3986_DUMP_KEY(fragment);
@@ -58,7 +61,7 @@ void rfc3986_dump(rfc3986_index_t *p_rfc3986_i) {
 }
 
 int main() {
-  char *uri = "http://admin:pass1234@test.com/index.php?store=cheese#inventory";
+  char *uri = "http://admin:pass1234@test.com:8080/index.php?store=cheese#inventory";
 
   rfc3986_index_t rfc3986_index = {0};
 

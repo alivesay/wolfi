@@ -28,13 +28,7 @@
   path_absolute = '/' (segment_nz ('/' segment)*)? %path;
   path_noscheme = segment_nz_nc ('/' segment)* %path;
   path_rootless = segment_nz ('/' segment)* %path;
-  path_empty    = '' %path;
-  
-  path          = path_abempty
-                | path_absolute
-                | path_noscheme
-                | path_rootless
-                | path_empty;
+  path_empty    = zlen;
   
   reg_name      = (unreserved | pct_encoded | sub_delims)*;
   
@@ -62,7 +56,7 @@
   
   IP_literal    = '[' (IPv6address | IPvFuture) ']';
   
-  port          = DIGIT*;
+  port          = DIGIT* >mark %port;
   host          = IP_literal | IPv4address | reg_name >mark %host; 
   userinfo      = (unreserved | pct_encoded | sub_delims | ':')* >mark %userinfo;
   authority     = (userinfo '@')? host (':' port)?;
