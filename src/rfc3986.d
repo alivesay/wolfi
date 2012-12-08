@@ -34,4 +34,3 @@ struct rfc3986_index_t {
 };
 
 void rfc3986_build_index(const char* p_buffer, rfc3986_index_t *p_rfc3986_i);
-void rfc3986_dump_index(rfc3986_index_t *p_rfc3986_i);

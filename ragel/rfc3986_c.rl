@@ -45,29 +45,3 @@ void parse_rfc3986(char *p_buffer, size_t p_buflen, rfc3986_index_t *p_rfc3986_i
   %% write init;
   %% write exec;
 }
-
-#define RFC3986_DUMP_KEY(name) \
-  printf(#name "->["); fwrite(p_rfc3986_i->name, sizeof(char), p_rfc3986_i->name##_len, stdout); printf("]\n");
-  
-void rfc3986_dump(rfc3986_index_t *p_rfc3986_i) {
-  RFC3986_DUMP_KEY(scheme);
-  RFC3986_DUMP_KEY(userinfo);
-  RFC3986_DUMP_KEY(host);
-  RFC3986_DUMP_KEY(port);
-  RFC3986_DUMP_KEY(path);
-  RFC3986_DUMP_KEY(query);
-  RFC3986_DUMP_KEY(fragment);
-  fflush(stdout);
-}
-
-int main() {
-  char *uri = "http://admin:pass1234@test.com:8080/index.php?store=cheese#inventory";
-
-  rfc3986_index_t rfc3986_index = {0};
-
-  parse_rfc3986(uri, strlen(uri), &rfc3986_index);
-
-  rfc3986_dump(&rfc3986_index);
-
-  return 0;
-}
