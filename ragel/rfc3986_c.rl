@@ -34,7 +34,8 @@ typedef struct {
   p_rfc3986_i->key       = offset; \
   p_rfc3986_i->key##_len = end - offset; 
 
-void parse_rfc3986(char *p_buffer, size_t p_buflen, rfc3986_index_t *p_rfc3986_i) {
+void parse_rfc3986(char *p_buffer, size_t p_buflen, rfc3986_index_t *p_rfc3986_i)
+{
   int cs;
   char *p, *pe, *mark, *eof;
   
