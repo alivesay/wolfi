@@ -3,7 +3,7 @@
 -debug
 -unittest
 -od"build"
--of"build/wolfi"
+-of"bin/wolfi"
 -I./src
 
 ./src/main.d
