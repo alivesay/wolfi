@@ -1,11 +1,11 @@
 %%{
   machine rfc3986;
 
-  UPALPHA = (upper);
-  LOALPHA = (lower);
-  ALPHA   = (UPALPHA | LOALPHA);
-  DIGIT   = (digit);
-  HEXDIG  = (xdigit);
+  UPALPHA       = upper;
+  LOALPHA       = lower;
+  ALPHA         = UPALPHA | LOALPHA;
+  DIGIT         = digit;
+  HEXDIG        = xdigit;
 
   sub_delims    = '!' | '$' | '&' | "'" | '(' | ')'
                 | '*' | '+' | ',' | ';' | '=';
