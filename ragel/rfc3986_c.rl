@@ -54,8 +54,9 @@ void rfc3986_uri_free(rfc3986_uri_t *p_uri)
 
 #define RFC3986_URI_SET_FIELD(field, index, uri) \
   if (index.field) { \
-    uri->field = malloc(index.field##_len * sizeof(*index.field) + 1); \
-    memcpy(uri->field, index.field, index.field##_len * sizeof(*index.field)); \
+    field_size = index.field##_len * sizeof(*index.field); \
+    uri->field = malloc(field_size + 1); \
+    memcpy(uri->field, index.field, field_size); \
     uri->field[index.field##_len] = '\0'; \
   } 
 
@@ -68,6 +69,7 @@ rfc3986_uri_t* rfc3986_uri_parse(const char* p_buffer)
   memset(uri, 0, sizeof(*uri));
 
   // TODO: need error handling somewhere
+  size_t field_size;
   rfc3986_index_build(&index, p_buffer);
 
   RFC3986_URI_SET_FIELD(scheme,   index, uri); 
