@@ -14,8 +14,10 @@
   HT            = 9;
   QUOTE         = 34;
   CRLF          = CR LF;
+  CRLF_OR_LF    = CRLF | LF;
   LWS           = CRLF?  (SP | HT)+;
   TEXT          = (OCTET - CTL) | LWS;
+  TEXT_NO_CRLF  = (TEXT - CR) - LF;
   HEX           = xdigit;
 
   seperators    = '(' | ')' | '<' | '>' | '@'
@@ -38,14 +40,13 @@
 
 
   # rfc3986
-  HEXDIG        = HEX;
   sub_delims    = '!' | '$' | '&' | "'" | '(' | ')'
                 | '*' | '+' | ',' | ';' | '=';
   gen_delims    = ':' | '/' | '?' | '#' | '[' | ']' | '@';
   reserved      = gen_delims | sub_delims;
   unreserved    = ALPHA | DIGIT | '-' | '.' | '_' | '~';
 
-  pct_encoded   = '%' HEXDIG HEXDIG;
+  pct_encoded   = '%' HEX HEX;
   
   pchar         = unreserved | pct_encoded | sub_delims | ':' | '@';
   
@@ -71,7 +72,7 @@
                 | '25' 0x30..0x35;       # 250-255
   
   IPv4address   = dec_octet '.' dec_octet '.' dec_octet '.' dec_octet;
-  h16           = HEXDIG{1,4};
+  h16           = HEX{1,4};
   ls32          = (h16 ':' h16) | IPv4address;
   
   IPv6address   =                              ( h16 ':' ){6} ls32
@@ -84,7 +85,7 @@
                 | (( h16 ':' ){,5} h16 )? '::'                h16
                 | (( h16 ':' ){,6} h16 )? '::';
   
-  IPvFuture     = 'v' HEXDIG{1} '.' (unreserved | sub_delims | ':'){1};
+  IPvFuture     = 'v' HEX{1} '.' (unreserved | sub_delims | ':'){1};
   
   IP_literal    = '[' (IPv6address | IPvFuture) ']';
   
@@ -126,15 +127,17 @@
 
   Request_URI   = '*' | URI_reference | authority;
 
-  Request_Line  = Method SP Request_URI SP HTTP_Version CRLF;
+  Request_Line  = Method SP Request_URI SP HTTP_Version CRLF_OR_LF;
+
+  Status_Code   = DIGIT{3};
+  Reason_Phrase = TEXT_NO_CRLF*; 
+  Status_Line   = HTTP_Version SP Status_Code SP Reason_Phrase CRLF_OR_LF;
 
   field_name    = token;
-  field_value   = TEXT*;
-  header        = field_name ':' (SP | HT)* field_value?;
+  field_value   = TEXT_NO_CRLF*;
+  msg_header    = field_name ':' (SP | HT)* field_value?;
 
   message_body  = OCTET*;
 
-  Request       = Request_Line (header CRLF)* CRLF message_body?;
-
-  main := Request;
+  HTTP_message  = (Request_Line | Status_Line) (msg_header CRLF_OR_LF)* CRLF_OR_LF message_body?;
 }%%
