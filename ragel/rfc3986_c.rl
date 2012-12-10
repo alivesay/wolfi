@@ -17,6 +17,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include "rfc3986.h"
 
 %% write data;
 
