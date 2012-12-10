@@ -1,6 +1,8 @@
 #ifndef RFC3986_H
 #define RFC3986_H
 
+#include <stdlib.h>
+
 typedef struct {
   const char *scheme;   size_t scheme_len;
   const char *userinfo; size_t userinfo_len;
