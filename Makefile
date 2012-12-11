@@ -86,5 +86,5 @@ clean:
 	test -d $(BINDIR) && rmdir $(BINDIR) || true
 	cd tests && make clean
 
-check:
+check: lib
 	cd tests && make && make check
