@@ -7,18 +7,18 @@ SRCDIR       = src
 OBJDIR       = obj
 BINDIR       = bin
 
-EXE_NAME	   = wolfi
+EXE_NAME     = wolfi
 LIB_NAME     = libwolfi.la
-EXE					 = $(BINDIR)/$(EXE_NAME)
-LIB					 = $(BINDIR)/$(LIB_NAME)
+EXE          = $(BINDIR)/$(EXE_NAME)
+LIB          = $(BINDIR)/$(LIB_NAME)
 
 CC           = clang
 CFLAGS       = -std=c99 -Wall -g
 INCLUDES     = -I./include
-LIBS				 = -lm
+LIBS         = -lm
 LDFLAGS      = -shared
 
-LIBTOOL			 = libtool --tag=CC --quiet
+LIBTOOL      = libtool --tag=CC --quiet
 
 RAGEL        = ragel
 RAGEL_DIR    = ragel
@@ -28,9 +28,9 @@ _RAGEL_FSMS  = $(_RAGEL_SRCS:.rl=.c)
 RAGEL_FSMS   = $(addprefix $(SRCDIR)/, $(_RAGEL_FSMS))
 
 SRCS         = $(RAGEL_FSMS) $(wildcard $(SRCDIR)/*.c)
-_SRCS			   = $(notdir $(SRCS))
+_SRCS        = $(notdir $(SRCS))
 _OBJS        = $(_SRCS:.c=.lo)
-OBJS				 = $(addprefix $(OBJDIR)/, $(_OBJS))
+OBJS         = $(addprefix $(OBJDIR)/, $(_OBJS))
 
 MAIN_SRC     = main.c
 _MAIN_OBJ    = $(MAIN_SRC:.c=.lo)

@@ -6,8 +6,8 @@ LDFLAGS	   = -L../bin/.libs -lm -lwolfi -Wl,-rpath=../bin/.libs $(CHECKFLAGS)
 
 
 # rfc3986_check.c
-RFC3986_CHECK				 = rfc3986_check
-RFC3986_CHECK_SRC	   = rfc3986_check.c
+RFC3986_CHECK        = rfc3986_check
+RFC3986_CHECK_SRC    = rfc3986_check.c
 RFC3986_CHECK_CFLAGS = $(CFLAGS) $(INCLUDES)
 RFC3986_CHECK_LIBS   = $(LDFLAGS)
 
