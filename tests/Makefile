@@ -1,8 +1,8 @@
-CC          = gcc
+CC          = clang
 CFLAGS      = -std=c99 -Wall -g -fprofile-arcs -ftest-coverage -DUNIT_TEST
 INCLUDES    = -I../include
 CHECKFLAGS	= -Wl,--whole-archive -lcheck -Wl,--no-whole-archive
-LDFLAGS			= -lm $(CHECKFLAGS)
+LDFLAGS			= -L../bin/.libs -lm -lwolfi -Wl,-rpath=../bin/.libs $(CHECKFLAGS)
 
 
 # rfc3986_check.c
@@ -16,14 +16,15 @@ TESTS = $(RFC3986_CHECK)
 
 
 all: $(TESTS)
-	.PHONY: all clean check
+.PHONY: all clean check
 
 # rfc3986_check.c
 $(RFC3986_CHECK): $(RFC3986_CHECK_SRC)
 	$(CC) $(RFC3986_CHECK_CFLAGS) -o $@ $^ $(RFC3986_CHECK_LIBS)
 
 clean:
-	rm -rf $(TESTS)
+	rm -f *.gcno *.gcda
+	rm -f $(TESTS)
 
 check:
 	@for t in $(TESTS); do \
