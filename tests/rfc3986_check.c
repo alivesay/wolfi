@@ -10,7 +10,7 @@
 START_TEST (test_rfc3986_uri_parse_0000)
 {
   const char *buffer = "http://user:pass@example.com:8080/a/b/c/d/e.ext?key=value#top";
-  rfc3986_uri_t *uri = rfc3986_uri_parse(buffer);
+  ow_rfc3986_uri_t *uri = ow_rfc3986_uri_parse(buffer);
 
   TEST_RFC3986_URI_FIELD(scheme,   "http");
   TEST_RFC3986_URI_FIELD(userinfo, "user:pass");
@@ -20,14 +20,14 @@ START_TEST (test_rfc3986_uri_parse_0000)
   TEST_RFC3986_URI_FIELD(query,    "key=value");
   TEST_RFC3986_URI_FIELD(fragment, "top");
 
-  rfc3986_uri_free(uri);
+  ow_rfc3986_uri_free(uri);
 }
 END_TEST
 
 START_TEST (test_rfc3986_uri_parse_0001)
 {
   const char *buffer = "/a/b/c/d/e/f/g";
-  rfc3986_uri_t *uri = rfc3986_uri_parse(buffer);
+  ow_rfc3986_uri_t *uri = ow_rfc3986_uri_parse(buffer);
 
   TEST_RFC3986_URI_FIELD(scheme,   "");
   TEST_RFC3986_URI_FIELD(host,     "");
@@ -36,14 +36,14 @@ START_TEST (test_rfc3986_uri_parse_0001)
   TEST_RFC3986_URI_FIELD(query,    "");
   TEST_RFC3986_URI_FIELD(fragment, "");
 
-  rfc3986_uri_free(uri);
+  ow_rfc3986_uri_free(uri);
 }
 END_TEST
 
 START_TEST (test_rfc3986_uri_parse_0002)
 {
   const char *buffer = "file:///path/to/a/share/doc.txt";
-  rfc3986_uri_t *uri = rfc3986_uri_parse(buffer);
+  ow_rfc3986_uri_t *uri = ow_rfc3986_uri_parse(buffer);
 
   TEST_RFC3986_URI_FIELD(scheme,   "file");
   TEST_RFC3986_URI_FIELD(userinfo, "");
@@ -53,14 +53,14 @@ START_TEST (test_rfc3986_uri_parse_0002)
   TEST_RFC3986_URI_FIELD(query,    "");
   TEST_RFC3986_URI_FIELD(fragment, "");
 
-  rfc3986_uri_free(uri);
+  ow_rfc3986_uri_free(uri);
 }
 END_TEST
 
 START_TEST (test_rfc3986_uri_parse_0003)
 {
   const char *buffer = "https://test.example.com/a/b/c/d/e/f/g/h.i?k=v&a=b&c=d&1=2&3=4#fragment";
-  rfc3986_uri_t *uri = rfc3986_uri_parse(buffer);
+  ow_rfc3986_uri_t *uri = ow_rfc3986_uri_parse(buffer);
 
   TEST_RFC3986_URI_FIELD(scheme,   "https");
   TEST_RFC3986_URI_FIELD(userinfo, "");
@@ -70,7 +70,7 @@ START_TEST (test_rfc3986_uri_parse_0003)
   TEST_RFC3986_URI_FIELD(query,    "k=v&a=b&c=d&1=2&3=4");
   TEST_RFC3986_URI_FIELD(fragment, "fragment");
 
-  rfc3986_uri_free(uri);
+  ow_rfc3986_uri_free(uri);
 }
 END_TEST
 

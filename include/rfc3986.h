@@ -11,7 +11,7 @@ typedef struct {
   const char *path;     size_t path_len;
   const char *query;    size_t query_len;
   const char *fragment; size_t fragment_len;
-} rfc3986_index_t;
+} ow_rfc3986_index_t;
 
 typedef struct {
   char *scheme;
@@ -21,9 +21,9 @@ typedef struct {
   char *path;
   char *query;
   char *fragment;
-} rfc3986_uri_t;
+} ow_rfc3986_uri_t;
 
-rfc3986_uri_t* rfc3986_uri_parse(const char *p_buffer);
-void rfc3986_uri_free(rfc3986_uri_t *p_uri);
+ow_rfc3986_uri_t* ow_rfc3986_uri_parse(const char *p_buffer);
+void ow_rfc3986_uri_free(ow_rfc3986_uri_t *p_uri);
 
 #endif // RFC3986_H
