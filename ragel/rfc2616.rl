@@ -36,7 +36,7 @@
 
   minor_version = DIGIT+; 
   major_version = DIGIT+;
-  HTTP_Version  = 'HTTP' '/' major_version '.' minor_version;
+  HTTP_Version  = 'HTTP' '/' major_version >mark %major_version '.' minor_version >mark %minor_version;
 
 
   # rfc3986
@@ -127,7 +127,7 @@
 
   Request_URI   = '*' | URI_reference | authority;
 
-  Request_Line  = Method SP Request_URI SP HTTP_Version CRLF_OR_LF;
+  Request_Line  = Method >method %method SP Request_URI >mark %request_uri SP HTTP_Version;
 
   Status_Code   = DIGIT{3};
   Reason_Phrase = TEXT_NO_CRLF*; 
