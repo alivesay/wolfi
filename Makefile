@@ -13,7 +13,7 @@ EXE          = $(BINDIR)/$(EXE_NAME)
 LIB          = $(BINDIR)/$(LIB_NAME)
 
 CC           = clang
-CFLAGS       = -std=c99 -Wall -g
+CFLAGS       = -std=c99 -Wall -Wextra -pedantic -g
 INCLUDES     = -I./include
 LIBS         = -lm
 LDFLAGS      = -shared

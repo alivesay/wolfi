@@ -21,6 +21,16 @@
 
 %% write data;
 
+typedef struct {
+  const char *scheme;   size_t scheme_len;
+  const char *userinfo; size_t userinfo_len;
+  const char *host;     size_t host_len;
+  const char *port;     size_t port_len;
+  const char *path;     size_t path_len;
+  const char *query;    size_t query_len;
+  const char *fragment; size_t fragment_len;
+} ow_rfc3986_index_t;
+
 #define OW_RFC3986_INDEX_SET_KEY(key, offset, end) \
   p_index->key       = offset; \
   p_index->key##_len = end - offset; 
@@ -46,13 +56,14 @@ void ow_rfc3986_index_build(ow_rfc3986_index_t *p_index, const char* p_buffer)
     uri->field[index.field##_len] = '\0'; \
   } 
 
-ow_rfc3986_uri_t* ow_rfc3986_uri_parse(const char* p_buffer)
+ow_rfc3986_uri_t* ow_rfc3986_uri_create(const char* p_buffer)
 {
   ow_rfc3986_index_t index;
   memset(&index, 0, sizeof(index));
-
+  
   ow_rfc3986_uri_t *uri = malloc(sizeof(*uri)); 
   memset(uri, 0, sizeof(*uri));
+  if(!uri) goto _fail;
 
   // TODO: need error handling somewhere
   size_t field_size;
@@ -67,6 +78,9 @@ ow_rfc3986_uri_t* ow_rfc3986_uri_parse(const char* p_buffer)
   OW_RFC3986_URI_SET_FIELD(fragment, index, uri); 
 
   return uri;
+
+_fail:
+  return NULL;
 }
 
 void ow_rfc3986_uri_free(ow_rfc3986_uri_t *p_uri)
