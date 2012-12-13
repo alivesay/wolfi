@@ -12,7 +12,7 @@
 //    p_index = malloc(
   
   printf("header_name:"); fwrite(mark, fpc - mark, 1, stdout); printf("\n");}
-  action header_value { printf("header_value:"); fwrite(mark, fpc - mark, 3, stdout); printf("\n");}
+  action header_value { printf("header_value:"); fwrite(mark, fpc - mark, 1, stdout); printf("\n");}
   action header_set{}
 
   include rfc2616 'rfc2616.rl';
@@ -56,9 +56,9 @@ int main()
 {
   const char *request = "GET /index.html HTTP/1.0\r\n" \
                         "Host: example.com\r\n" \
-                        "User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux; x86_64; rv:14.0)\r\n" \
-                        "Accept: text/html\r\n" \
                         "Accept-Language: en-us\r\n" \
+                        "Accept: text/html\r\n" \
+                        "User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux; x86_64; rv:14.0)\r\n" \
                         "Connection: keep-alive\r\n\r\n";
 
   int cs;
