@@ -5,22 +5,22 @@ CHECKFLAGS = -Wl,--whole-archive -lcheck -Wl,--no-whole-archive
 LDFLAGS	   = -L../bin/.libs -lm -lwolfi -Wl,-rpath=../bin/.libs $(CHECKFLAGS)
 
 
-# rfc3986_check.c
-RFC3986_CHECK        = rfc3986_check
-RFC3986_CHECK_SRC    = rfc3986_check.c
-RFC3986_CHECK_CFLAGS = $(CFLAGS) $(INCLUDES)
-RFC3986_CHECK_LIBS   = $(LDFLAGS)
+# uri_check.c
+URI_CHECK        = uri_check
+URI_CHECK_SRC    = uri_check.c
+URI_CHECK_CFLAGS = $(CFLAGS) $(INCLUDES)
+URI_CHECK_LIBS   = $(LDFLAGS)
 
 
-TESTS = $(RFC3986_CHECK)
+TESTS = $(URI_CHECK)
 
 
 all: $(TESTS)
 .PHONY: all clean check
 
-# rfc3986_check.c
-$(RFC3986_CHECK): $(RFC3986_CHECK_SRC)
-	$(CC) $(RFC3986_CHECK_CFLAGS) -o $@ $^ $(RFC3986_CHECK_LIBS)
+# uri_check.c
+$(URI_CHECK): $(URI_CHECK_SRC)
+	$(CC) $(URI_CHECK_CFLAGS) -o $@ $^ $(URI_CHECK_LIBS)
 
 clean:
 	rm -f *.gcno *.gcda
