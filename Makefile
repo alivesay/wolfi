@@ -80,7 +80,7 @@ install-lib: $(LIB)
 	install --mode=finish
 
 clean:
-	rm -rf $(BINDIR)/.libs $(OBJDIR)/.libs
+	rm -rf .libs $(BINDIR)/.libs $(OBJDIR)/.libs
 	rm -f $(MAIN_OBJ) $(MAIN_OBJ:.lo=.o) $(OBJS) $(OBJS:.lo=.o) $(RAGEL_FSMS) $(LIB) $(EXE) || true
 	test -d $(OBJDIR) && rmdir $(OBJDIR) || true
 	test -d $(BINDIR) && rmdir $(BINDIR) || true
