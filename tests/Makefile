@@ -11,8 +11,15 @@ URI_CHECK_SRC    = uri_check.c
 URI_CHECK_CFLAGS = $(CFLAGS) $(INCLUDES)
 URI_CHECK_LIBS   = $(LDFLAGS)
 
+# http_message_check.c
+HTTP_MESSAGE_CHECK        = http_message_check
+HTTP_MESSAGE_CHECK_SRC    = http_message_check.c
+HTTP_MESSAGE_CHECK_CFLAGS = $(CFLAGS) $(INCLUDES)
+HTTP_MESSAGE_CHECK_LIBS   = $(LDFLAGS)
 
-TESTS = $(URI_CHECK)
+
+TESTS = $(URI_CHECK) \
+				$(HTTP_MESSAGE_CHECK)
 
 
 all: $(TESTS)
@@ -21,6 +28,11 @@ all: $(TESTS)
 # uri_check.c
 $(URI_CHECK): $(URI_CHECK_SRC)
 	$(CC) $(URI_CHECK_CFLAGS) -o $@ $^ $(URI_CHECK_LIBS)
+
+# http_message_check.c
+$(HTTP_MESSAGE_CHECK): $(HTTP_MESSAGE_CHECK_SRC)
+	$(CC) $(HTTP_MESSAGE_CHECK_CFLAGS) -o $@ $^ $(HTTP_MESSAGE_CHECK_LIBS)
+
 
 clean:
 	rm -f *.gcno *.gcda
