@@ -31,11 +31,13 @@
 
 %% write data;
 
-#define OW_HTTP_MESSAGE_SET_FIELD(field, offset, len) \
-  if (http_message->field) free(http_message->field); \
-  http_message->field = malloc((len) * sizeof(*http_message->field) + 1); \
-  memcpy(http_message->field, offset, (len) * sizeof(*http_message->field)); \
-  http_message->field[len] = '\0';
+#define OW_HTTP_MESSAGE_SET_FIELD(field, offset, len)                          \
+  do {                                                                         \
+    if (http_message->field) free(http_message->field);                        \
+    http_message->field = malloc((len) * sizeof(*http_message->field) + 1);    \
+    memcpy(http_message->field, offset, (len) * sizeof(*http_message->field)); \
+    http_message->field[len] = '\0';                                           \
+  } while(0)
 
 struct ow_http_message* ow_http_message_create(const char* p_buffer)
 {
@@ -84,19 +86,4 @@ void ow_http_message_free(struct ow_http_message *p_http_message)
   free(p_http_message);
 
   p_http_message = NULL;
-}
-
-int main()
-{
-  const char *buffer = "GET /index.html HTTP/1.0\r\n" \
-                        "Host: example.com\r\n" \
-                        "Accept-Language: en-us\r\n" \
-                        "Accept: text/html\r\n" \
-                        "User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux; x86_64; rv:14.0)\r\n" \
-                        "Connection: keep-alive\r\n\r\n";
-
-  struct ow_http_message *request = ow_http_message_create(buffer);
-  ow_http_message_free(request);
-
-  return 0;
 }

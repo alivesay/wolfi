@@ -2,13 +2,13 @@
   machine uri_c;
 
   action mark       { mark = fpc; }
-  action scheme     { printf("scheme:\n"); OW_URI_SET_FIELD(scheme,   mark, fpc - mark); }
-  action userinfo   { printf("userinfo:\n"); OW_URI_SET_FIELD(userinfo, mark, fpc - mark); }
-  action host       { printf("host:\n"); OW_URI_SET_FIELD(host,     mark, fpc - mark); }
-  action port       { printf("port:\n"); OW_URI_SET_FIELD(port,     mark, fpc - mark); }
-  action path       { printf("path\n"); OW_URI_SET_FIELD(path,     mark, fpc - mark); }
-  action query      { printf("query:\n"); OW_URI_SET_FIELD(query,    mark, fpc - mark); }
-  action fragment   { printf("fragment:\n"); OW_URI_SET_FIELD(fragment, mark, fpc - mark); }
+  action scheme     { OW_URI_SET_FIELD(scheme,   mark, fpc - mark); }
+  action userinfo   { OW_URI_SET_FIELD(userinfo, mark, fpc - mark); }
+  action host       { OW_URI_SET_FIELD(host,     mark, fpc - mark); }
+  action port       { OW_URI_SET_FIELD(port,     mark, fpc - mark); }
+  action path       { OW_URI_SET_FIELD(path,     mark, fpc - mark); }
+  action query      { OW_URI_SET_FIELD(query,    mark, fpc - mark); }
+  action fragment   { OW_URI_SET_FIELD(fragment, mark, fpc - mark); }
   
   include uri 'uri.rl';
 
@@ -22,12 +22,14 @@
 
 %% write data;
  
-#define OW_URI_SET_FIELD(field, offset, len) \
-  if (uri->field) free(uri->field); \
-  uri->field = malloc((len) * sizeof(*uri->field) + 1); \
-  memcpy(uri->field, offset, (len) * sizeof(*uri->field)); \
-  uri->field[len] = '\0'; \
-  printf("%d\t%s[%d]\n", cs, uri->field, len); 
+#define OW_URI_SET_FIELD(field, offset, len)                 \
+  do {                                                       \
+    if (uri->field) free(uri->field);                        \
+    uri->field = malloc((len) * sizeof(*uri->field) + 1);    \
+    memcpy(uri->field, offset, (len) * sizeof(*uri->field)); \
+    uri->field[len] = '\0';                                  \
+  } while(0)
+
 
 struct ow_uri* ow_uri_create(const char* p_buffer)
 {
