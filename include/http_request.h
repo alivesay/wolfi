@@ -1,14 +1,7 @@
-#ifndef HTTP_MESSAGE_H
-#define HTTP_MESSAGE_H
+#ifndef HTTP_REQUEST_H
+#define HTTP_REQUEST_H
 
-#include <stdlib.h>
-
-struct ow_http_message_header {
-  char *name;
-  char *value;
-
-  struct ow_http_message_header *next;
-};
+#include "hash_table.h"
 
 struct ow_http_message {
   char *method;
@@ -16,7 +9,7 @@ struct ow_http_message {
   char *major_version;
   char *minor_version;
   
-  struct ow_http_message_header *headers;
+  struct ow_hash_table *headers;
 };
 
 struct ow_http_message* ow_http_message_create(const char* p_buffer);
