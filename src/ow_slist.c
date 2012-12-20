@@ -2,12 +2,13 @@
 #include <stdlib.h>
 
 #include "ow_slist.h"
+#include "ow_types.h"
 
 
 void
-ow_slist_free(struct ow_slist* p_slist)
+ow_slist_free(struct ow_slist *p_slist)
 {
-  struct ow_slist* p;
+  struct ow_slist *p;
   
   while ((p = p_slist)) {
     p_slist = p_slist->next;
@@ -16,10 +17,25 @@ ow_slist_free(struct ow_slist* p_slist)
 }
 
 
-struct ow_slist*
-ow_slist_insert(struct ow_slist* p_slist, void* p_data)
+void
+ow_slist_free_custom(struct ow_slist *p_slist, OWFreeFunc p_free_func)
 {
-  struct ow_slist* p = malloc(sizeof(*p));
+  assert(NULL != p_free_func);
+
+  struct ow_slist *p;
+  
+  while ((p = p_slist)) {
+    p_slist = p_slist->next;
+    p_free_func(p->data);
+    free(p);
+  }
+}
+
+
+struct ow_slist*
+ow_slist_insert(struct ow_slist *p_slist, void *p_data)
+{
+  struct ow_slist *p = malloc(sizeof(*p));
   if (!p) goto _fail;
 
   p->data = p_data;
@@ -33,10 +49,8 @@ _fail:
 
 
 struct ow_slist*
-ow_slist_remove(struct ow_slist *p_slist, void* p_data)
+ow_slist_remove(struct ow_slist *p_slist, void *p_data)
 {
-  assert(NULL != p_slist);
-  
   struct ow_slist *p = p_slist;
   struct ow_slist *prev = NULL;
 
@@ -59,11 +73,8 @@ ow_slist_remove(struct ow_slist *p_slist, void* p_data)
 
 
 struct ow_slist*
-ow_slist_remove_node(struct ow_slist *p_slist, struct ow_slist* p_node)
+ow_slist_remove_node(struct ow_slist *p_slist, struct ow_slist *p_node)
 {
-  assert(NULL != p_slist);
-  assert(NULL != p_node);
-  
   struct ow_slist *p = p_slist;
   struct ow_slist *prev = NULL;
 
@@ -76,6 +87,28 @@ ow_slist_remove_node(struct ow_slist *p_slist, struct ow_slist* p_node)
     if (prev) prev->next = p->next;
     free(p);
   }
+
+  return p_slist;
+}
+
+
+struct ow_slist*
+ow_slist_find(struct ow_slist *p_slist, void *p_data)
+{
+  while (p_slist && p_slist->data != p_data)
+    p_slist = p_slist->next;
+
+  return p_slist;
+}
+
+
+struct ow_slist*
+ow_slist_find_custom(struct ow_slist *p_slist, void *p_data, OWCompareFunc p_compare_func)
+{
+  assert(NULL != p_compare_func);
+
+  while (p_slist && p_compare_func(p_slist->data, p_data) != 0)
+    p_slist = p_slist->next;
 
   return p_slist;
 }

@@ -21,6 +21,12 @@ int main()
   list = ow_slist_insert(list, "World");
   list = ow_slist_insert(list, "XXXX");
 
+  struct ow_slist *x = ow_slist_find(list, "Hello");
+  if (x)
+    printf("Found: %s\n", (char*)x->data);
+  else
+    printf("Find failed\n");
+
   list = ow_slist_remove(list, "XXXX");
   
   printf("empty?: %d\n", ow_slist_is_empty(list));
