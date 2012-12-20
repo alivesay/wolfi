@@ -9,7 +9,7 @@ ow_slist_free(struct ow_slist* p_slist)
 {
   struct ow_slist* p;
   
-  while (p = p_slist) {
+  while ((p = p_slist)) {
     p_slist = p_slist->next;
     free(p);
   }
