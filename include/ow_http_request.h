@@ -1,7 +1,7 @@
-#ifndef HTTP_REQUEST_H
-#define HTTP_REQUEST_H
+#ifndef OW_HTTP_REQUEST_H
+#define OW_HTTP_REQUEST_H
 
-#include "hash_table.h"
+#include "ow_hash_table.h"
 
 struct ow_http_message {
   char *method;
@@ -15,4 +15,4 @@ struct ow_http_message {
 struct ow_http_message* ow_http_message_create(const char* p_buffer);
 void ow_http_message_free(struct ow_http_message *p_http_message);
 
-#endif // HTTP_MESSAGE_H
+#endif // OW_HTTP_MESSAGE_H

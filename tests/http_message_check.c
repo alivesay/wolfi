@@ -2,7 +2,8 @@
 
 #include <stdlib.h>
 #include <check.h>
-#include "http_message.h"
+
+#include "ow_http_message.h"
 
 #define TEST_HTTP_MESSAGE_FIELD(field, expected) \
   fail_unless(http_message->field == NULL || strcmp(http_message->field, expected) == 0, #field " field check failed");

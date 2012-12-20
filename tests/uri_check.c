@@ -2,7 +2,8 @@
 
 #include <stdlib.h>
 #include <check.h>
-#include "uri.h"
+
+#include "ow_uri.h"
 
 #define TEST_URI_FIELD(field, expected) \
   fail_unless(uri->field == NULL || strcmp(uri->field, expected) == 0, #field " field check failed");

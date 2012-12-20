@@ -1,5 +1,5 @@
-#ifndef URI_H
-#define URI_H
+#ifndef OW_URI_H
+#define OW_URI_H
 
 #include <stdlib.h>
 
@@ -16,4 +16,4 @@ struct ow_uri {
 struct ow_uri* ow_uri_create(const char *p_buffer);
 void ow_uri_free(struct ow_uri *p_uri);
 
-#endif // URI_H
+#endif // OW_URI_H

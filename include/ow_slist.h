@@ -1,5 +1,5 @@
-#ifndef SLIST_H
-#define SLIST_H
+#ifndef OW_SLIST_H
+#define OW_SLIST_H
 
 struct ow_slist {
   void              *data;
@@ -20,4 +20,4 @@ unsigned int       ow_slist_length        (struct ow_slist *p_slist);
 //
 //
 
-#endif /* SLIST_H */
+#endif /* OW_SLIST_H */

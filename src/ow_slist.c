@@ -1,7 +1,7 @@
 #include <assert.h>
 #include <stdlib.h>
 
-#include "slist.h"
+#include "ow_slist.h"
 
 
 void
