@@ -2,7 +2,6 @@
 #include <stdlib.h>
 
 #include "ow_slist.h"
-#include "ow_types.h"
 
 
 void
@@ -18,7 +17,8 @@ ow_slist_free(struct ow_slist *p_slist)
 
 
 void
-ow_slist_free_custom(struct ow_slist *p_slist, OWFreeFunc p_free_func)
+ow_slist_free_custom(struct ow_slist *p_slist,
+                     OWFreeFunc const p_free_func)
 {
   assert(NULL != p_free_func);
 
@@ -33,7 +33,8 @@ ow_slist_free_custom(struct ow_slist *p_slist, OWFreeFunc p_free_func)
 
 
 struct ow_slist*
-ow_slist_insert(struct ow_slist *p_slist, void *p_data)
+ow_slist_insert(struct ow_slist const *const p_slist,
+                void *const p_data)
 {
   struct ow_slist *p = malloc(sizeof(*p));
   if (!p) goto _fail;
@@ -49,7 +50,8 @@ _fail:
 
 
 struct ow_slist*
-ow_slist_remove(struct ow_slist *p_slist, void *p_data)
+ow_slist_remove(struct ow_slist *p_slist,
+                void const *const p_data)
 {
   struct ow_slist *p = p_slist;
   struct ow_slist *prev = NULL;
@@ -73,7 +75,8 @@ ow_slist_remove(struct ow_slist *p_slist, void *p_data)
 
 
 struct ow_slist*
-ow_slist_remove_node(struct ow_slist *p_slist, struct ow_slist *p_node)
+ow_slist_remove_node(struct ow_slist *p_slist,
+                     struct ow_slist const *p_node)
 {
   struct ow_slist *p = p_slist;
   struct ow_slist *prev = NULL;
@@ -93,7 +96,8 @@ ow_slist_remove_node(struct ow_slist *p_slist, struct ow_slist *p_node)
 
 
 struct ow_slist*
-ow_slist_find(struct ow_slist *p_slist, void *p_data)
+ow_slist_find(struct ow_slist *p_slist,
+              void const *const p_data)
 {
   while (p_slist && p_slist->data != p_data)
     p_slist = p_slist->next;
@@ -103,7 +107,9 @@ ow_slist_find(struct ow_slist *p_slist, void *p_data)
 
 
 struct ow_slist*
-ow_slist_find_custom(struct ow_slist *p_slist, void *p_data, OWCompareFunc p_compare_func)
+ow_slist_find_custom(struct ow_slist *p_slist,
+                     void const *const p_data,
+                     OWCompareFunc const p_compare_func)
 {
   assert(NULL != p_compare_func);
 
@@ -115,14 +121,14 @@ ow_slist_find_custom(struct ow_slist *p_slist, void *p_data, OWCompareFunc p_com
 
 
 _Bool
-ow_slist_is_empty(struct ow_slist *p_slist)
+ow_slist_is_empty(struct ow_slist const *const p_slist)
 {
   return ow_slist_length(p_slist) == 0;
 }
 
 
 unsigned int
-ow_slist_length(struct ow_slist *p_slist)
+ow_slist_length(struct ow_slist const *p_slist)
 {
   unsigned int length = 0;
 

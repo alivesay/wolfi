@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #include "ow_slist.h"
+#include "ow_strings.h"
 
 static inline void dump(struct ow_slist *p_slist)
 {
