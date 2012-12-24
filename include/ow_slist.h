@@ -15,11 +15,11 @@ void               ow_slist_free          (struct ow_slist *const p_slist);
 void               ow_slist_free_custom   (struct ow_slist *p_slist, 
                                            OWFreeFunc const p_free_func);
 
-struct ow_slist*   ow_slist_insert        (struct ow_slist const *const p_slist,
-                                           void const *const p_data);
+struct ow_slist*   ow_slist_insert        (struct ow_slist *const p_slist,
+                                           void *const p_data);
 
-struct ow_slist*   ow_slist_insert_end    (struct ow_slist const *const p_slist,
-                                           void const *const p_data);
+struct ow_slist*   ow_slist_insert_end    (struct ow_slist *const p_slist,
+                                           void *const p_data);
 
 struct ow_slist*   ow_slist_remove        (struct ow_slist *p_slist,
                                            void const *const p_data);

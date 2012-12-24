@@ -17,7 +17,7 @@
   }
   action header_value { OW_HTTP_MESSAGE_SET_FIELD(headers->value, fpc, fpc - mark); }
 
-  include http_message_parser 'http_message_parser.rl';
+  include http_message_parser 'ow_http_message_parser.rl';
 
   main := HTTP_message;
 }%%
@@ -26,8 +26,8 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include "http_message.h"
-#include "uri.h"
+#include "ow_http_message.h"
+#include "ow_uri.h"
 
 %% write data;
 

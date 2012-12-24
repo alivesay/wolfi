@@ -17,9 +17,17 @@ HTTP_MESSAGE_CHECK_SRC    = http_message_check.c
 HTTP_MESSAGE_CHECK_CFLAGS = $(CFLAGS) $(INCLUDES)
 HTTP_MESSAGE_CHECK_LIBS   = $(LDFLAGS)
 
+# slist_check.c
+SLIST_CHECK        = slist_check
+SLIST_CHECK_SRC    = slist_check.c
+SLIST_CHECK_CFLAGS = $(CFLAGS) $(INCLUDES)
+SLIST_CHECK_LIBS   = $(LDFLAGS)
+
+
 
 TESTS = $(URI_CHECK) \
-				$(HTTP_MESSAGE_CHECK)
+				$(HTTP_MESSAGE_CHECK) \
+        $(SLIST_CHECK)
 
 
 all: $(TESTS)
@@ -32,6 +40,11 @@ $(URI_CHECK): $(URI_CHECK_SRC)
 # http_message_check.c
 $(HTTP_MESSAGE_CHECK): $(HTTP_MESSAGE_CHECK_SRC)
 	$(CC) $(HTTP_MESSAGE_CHECK_CFLAGS) -o $@ $^ $(HTTP_MESSAGE_CHECK_LIBS)
+
+# slist_check.c
+$(SLIST_CHECK): $(SLIST_CHECK_SRC)
+	$(CC) $(SLIST_CHECK_CFLAGS) -o $@ $^ $(SLIST_CHECK_LIBS)
+
 
 
 clean:

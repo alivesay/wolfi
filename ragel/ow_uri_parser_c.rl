@@ -10,7 +10,7 @@
   action query      { OW_URI_SET_FIELD(query,    mark, fpc - mark); }
   action fragment   { OW_URI_SET_FIELD(fragment, mark, fpc - mark); }
   
-  include uri_parser 'uri_parser.rl';
+  include uri_parser 'ow_uri_parser.rl';
 
   main := URI_reference;
 }%%
@@ -18,7 +18,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "uri.h"
+#include "ow_uri.h"
 
 %% write data;
  
