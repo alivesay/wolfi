@@ -1,9 +1,10 @@
 #ifndef OW_HTTP_REQUEST_H
 #define OW_HTTP_REQUEST_H
 
+
 //#include "ow_hash_table.h"
 
-struct ow_http_message {
+struct ow_http_request {
   char *method;
   char *request_uri;
   char *major_version;
@@ -12,7 +13,9 @@ struct ow_http_message {
 //  struct ow_hash_table *headers;
 };
 
-struct ow_http_message* ow_http_message_create(const char* p_buffer);
-void ow_http_message_free(struct ow_http_message *p_http_message);
+struct ow_http_request*   ow_http_request_create   (void);
 
-#endif // OW_HTTP_MESSAGE_H
+void                      ow_http_request_free     (struct ow_http_request const *p_http_request);
+
+
+#endif // OW_HTTP_REQUEST_H

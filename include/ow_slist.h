@@ -9,7 +9,6 @@ struct ow_slist {
   struct ow_slist   *next;
 };
 
-
 void               ow_slist_free          (struct ow_slist *const p_slist);
 
 void               ow_slist_free_custom   (struct ow_slist *p_slist, 

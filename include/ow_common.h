@@ -2,10 +2,11 @@
 #define OW_COMMON_H
 
 
-#define OW_STRINGIZE_X(i) #i
-#define OW_STRINGIZE(i) OW_STRINGIZE_X(i)
+#define OW_STRINGIZE_X(i)   #i
+#define OW_STRINGIZE(i)     OW_STRINGIZE_X(i)
 
-#define OW_BUILD_LOG_STR(s) (__FILE__ ":" OW_STRINGIZE(__LINE__) " -- [" s "]")
+#define OW_MIN(a, b)   (((a) > (b)) ? (b) : (a))
+#define OW_MAX(a, b)   (((a) < (b)) ? (b) : (a))
 
 
 #endif // OW_COMMON_H

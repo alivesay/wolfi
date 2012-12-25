@@ -1,6 +1,10 @@
 #ifndef OW_LOG_H
 #define OW_LOG_H
 
+#include "ow_common.h"
+
+
+#define OW_LOG_BUILD_STR(s) (__FILE__ ":" OW_STRINGIZE(__LINE__) " -- [" s "]")
 
 enum OWLogLevel {
   OWLogLevel_EMERG = 0,

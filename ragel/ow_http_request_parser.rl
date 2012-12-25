@@ -1,5 +1,5 @@
 %%{
-  machine http_message_parser;
+  machine http_request_parser;
 
   OCTET         = any;
   CHAR          = ascii;
@@ -129,15 +129,11 @@
 
   Request_Line  = Method >method %method SP Request_URI >mark %request_uri SP HTTP_Version CRLF_OR_LF;
 
-  Status_Code   = DIGIT{3};
-  Reason_Phrase = TEXT_NO_CRLF*; 
-  Status_Line   = HTTP_Version SP Status_Code SP Reason_Phrase CRLF_OR_LF;
-
   field_name    = token >mark %header_name;
   field_value   = (TEXT - CR - LF)* >mark %header_value;
   msg_header    = field_name ':' SP* field_value CRLF_OR_LF;
 
   message_body  = OCTET*;
 
-  HTTP_message  = (Request_Line | Status_Line) msg_header* message_body?;
+  HTTP_request  = Request_Line msg_header* message_body?;
 }%%

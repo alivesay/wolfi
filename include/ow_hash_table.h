@@ -1,46 +1,69 @@
-#ifndef H_G2HASHTABLE
-#define H_G2HASHTABLE
+#ifndef OW_HASH_TABLE_H 
+#define OW_HASH_TABLE_H
 
-#include "g2_types.h"
-#include <stddef.h>
-#include <stdint.h>
+#include "ow_types.h"
 
-#define G2_DEFAULT_HASH_TABLE_SIZE 128
+#define OW_HASH_TABLE_DEFAULT_SIZE 128
 
-typedef struct _g2_hash_table_node_t {
-    uint32 key;
-    void* data;
-    struct _g2_hash_table_node_t* next;
-} g2_hash_table_node_t;
+struct _ow_hash_table_node {
+    unsigned int                    key;
+    void*                           data;
+    struct _ow_hash_table_node_t*   next;
+};
 
-typedef struct {
-    size_t size;
-    g2_hash_table_node_t **nodes;
-    size_t (*hash_function)(const char*);
-    bool allows_duplicates;
-} g2_hash_table_t;
+struct _ow_hash_table {
+    unsigned int                   length;
+    struct _ow_hash_table_node_t   **nodes;
+    _Bool                          allows_duplicates;
+    OWHashFunc                     hash_func;
+};
 
-typedef struct {
-    uint32 i;
-    g2_hash_table_node_t * node;
-    uint32 key;
-    void* value;
-} g2_hash_table_iterator_t;
+typedef struct _ow_hash_table OWHashTable;
 
-g2_hash_table_t* g2_hash_table_create(size_t p_size);
-void g2_hash_table_release(g2_hash_table_t *p_table);
-uint32 g2_hash_table_insert(g2_hash_table_t *p_table, const char* p_key,
-void *p_data);
-uint32 g2_hash_table_inserti(g2_hash_table_t *p_table, uint32 p_key, void*
-p_data);
-void g2_hash_table_remove(g2_hash_table_t *p_table, const char* p_key);
-uint32 g2_hash_table_removei(g2_hash_table_t *p_table, uint32 p_key);
-void* g2_hash_table_get(g2_hash_table_t *p_table, const char *p_key);
-void* g2_hash_table_geti(g2_hash_table_t *p_table, uint32 p_key);
-uint32 g2_hash_table_resize(g2_hash_table_t *p_table, size_t p_size);
-void g2_hash_table_iterator_create(g2_hash_table_iterator_t *p_iterator);
-void* g2_hash_table_iterator_next(g2_hash_table_t *p_table,
-g2_hash_table_iterator_t *p_iterator);
+/*
+struct _ow_hash_table_iterator {
+    uint32                        i;
+    struct ow_hash_table_node_t   *node;
+    uint32                        key;
+    void*                         value;
+};
+
+typedef struct _ow_hash_table_iterator OWHashTableIterator;
+
+*/
+
+OWHashTable*   ow_hash_table_create    (unsigned int const p_length);
+
+void           ow_hash_table_free      (OWHashTable *p_table);
+
+unsigned int   ow_hash_table_insert    (OWHashTable const *const p_table,
+                                        char const *const p_key,
+                                        void const *const p_data);
+
+unsigned int   ow_hash_table_inserti   (OWHashTable *p_table,
+                                        unsigned int p_key const,
+                                        void const *const p_data);
+
+void           ow_hash_table_remove    (OWHashTable *p_table,
+                                        char consti *const p_key);
+
+unsigned int   ow_hash_table_removei   (OWHashTable *p_table,
+                                        unsigned int const p_key);
+
+void*          ow_hash_table_get       (OWHashTable *p_table,
+                                        const char *p_key);
+
+void*          ow_hash_table_geti      (OWHashTable *p_table,
+                                        unsigned int const p_key);
+
+unsigned int   ow_hash_table_resize    (OWHashTable *p_table,
+                                        size_t p_size);
+
+/*
+void           ow_hash_table_iterator_create(ow_hash_table_iterator_t *p_iterator);
+void* ow_hash_table_iterator_next(ow_hash_table_t *p_table,
+ow_hash_table_iterator_t *p_iterator);
+*/
 
 #undef get16bits
 #if (defined(__GNUC__) && defined(__i386__)) || defined(__WATCOMC__) \
@@ -53,6 +76,8 @@ g2_hash_table_iterator_t *p_iterator);
                        +(uint32_t)(((const uint8_t *)(d))[0]) )
 #endif
 
+
+// replace with mummurhash
 
 
 /* by Paul Hsieh */

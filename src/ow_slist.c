@@ -49,7 +49,7 @@ ow_slist_insert(struct ow_slist *const p_slist,
   return p;
 
 _malloc_failed:
-  ow_log(OWLogLevel_EMERG, "malloc() failed");
+  ow_log(OWLogLevel_EMERG, OW_LOG_BUILD_STR("malloc() failed"));
   return NULL;
 }
 
@@ -79,7 +79,7 @@ ow_slist_insert_end(struct ow_slist *const p_slist,
   return p;
 
 _malloc_failed:
-  ow_log(OWLogLevel_EMERG, "malloc() failed");
+  ow_log(OWLogLevel_EMERG, OW_LOG_BUILD_STR("malloc() failed"));
   return NULL;
 }
 
