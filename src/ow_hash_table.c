@@ -2,15 +2,14 @@
 #include <assert.h>
 #include <stdlib.h>
 
-#include "ow_common.h"
 #include "ow_log.h"
 #include "ow_hash_table.h"
 
 
-static inline unsigned int
-_ow_hash_table_next_prime_modulus(const unsigned int p_n)
+static inline uint32_t
+_ow_hash_table_next_prime_modulus(const uint32_t p_n)
 {
-  static const unsigned int prime_modull[] = {
+  static const uint32_t prime_modull[] = {
              7u,
             13u,
             31u,
@@ -43,7 +42,7 @@ _ow_hash_table_next_prime_modulus(const unsigned int p_n)
     4294967291u
   };
  
-  const unsigned int *i = prime_modull;
+  const uint32_t *i = prime_modull;
 
   do {
     if (*i > p_i) return *i;

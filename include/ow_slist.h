@@ -1,7 +1,7 @@
 #ifndef OW_SLIST_H
 #define OW_SLIST_H
 
-#include "ow_types.h"
+#include "ow_common.h"
 
 
 struct ow_slist {
@@ -33,9 +33,9 @@ struct ow_slist*   ow_slist_find_custom   (struct ow_slist *p_slist,
                                            const void *const p_data,
                                            const OWCompareFunc p_compare_func);
 
-bool   ow_slist_is_empty                  (const struct ow_slist *const p_slist);
+bool               ow_slist_is_empty      (const struct ow_slist *const p_slist);
 
-unsigned int       ow_slist_length        (const struct ow_slist *p_slist);
+uint32_t           ow_slist_length        (const struct ow_slist *p_slist);
 
 //remove custom
 #endif /* OW_SLIST_H */

@@ -2,7 +2,6 @@
 #define OW_COMMON_H
 
 #include <limits.h>
-#include <stdint.h>
 
 #include "ow_types.h"
 
@@ -16,10 +15,11 @@
 #define OW_MAX(a, b)   (((a) < (b)) ? (b) : (a))
 
 
-inline unsigned int
-next_power_of_two(unsigned int p_n, bool p_accept_current)
+inline uint32_t
+next_power_of_two(uint32_t p_n,
+                  bool p_accept_current)
 {
-  unsigned int i;
+  uint32_t i;
 
   if (p_n < 0) return 0;
 
@@ -32,10 +32,11 @@ next_power_of_two(unsigned int p_n, bool p_accept_current)
 }
 
 
-inline unsigned int
-prev_power_of_two(unsigned int p_n, bool p_accept_current)
+inline uint32_t
+prev_power_of_two(uint32_t p_n,
+                  bool p_accept_current)
 {
-  unsigned int i;
+  uint32_t i;
 
   if (p_n < 0) return 0;
 
@@ -49,7 +50,7 @@ prev_power_of_two(unsigned int p_n, bool p_accept_current)
 
 
 inline bool
-is_power_of_two(unsigned int p_n)
+is_power_of_two(uint32_t p_n)
 {
   return p_n > 0 && (p_n & (p_n - 1)) == 0;
 }

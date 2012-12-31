@@ -1,7 +1,7 @@
 #include <assert.h>
 #include <stdlib.h>
 
-#include "ow_log"
+#include "ow_log.h"
 #include "ow_slist.h"
 
 
@@ -167,7 +167,7 @@ ow_slist_is_empty(const struct ow_slist *const p_slist)
 }
 
 
-unsigned int
+uint32_t
 ow_slist_length(const struct ow_slist *p_slist)
 {
   unsigned int length;
