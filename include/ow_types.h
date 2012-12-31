@@ -5,8 +5,8 @@
 #include <stdbool.h>
 
 
-typedef uint32_t(*OWCompareFunc)(const void *p_a, const void *p_b);
-typedef uint32_t(*OWFreeFunc)(const void *p_data);
+typedef int(*OWCompareFunc)(const void *p_a, const void *p_b);
+typedef void(*OWFreeFunc)(const void *p_data);
 
 typedef uint32_t(*OWHashFunc)(const char *const p_string);
 typedef uint32_t(*OWHash32StrFunc)(const char *p_key); 
