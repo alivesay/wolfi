@@ -1,7 +1,6 @@
 #include <assert.h>
 #include <stdlib.h>
 
-#include "ow_common.h"
 #include "ow_log"
 #include "ow_slist.h"
 
