@@ -1,6 +1,8 @@
 #ifndef OW_TYPES_H
 #define OW_TYPES_H
 
+#include <stdbool.h>
+
 
 typedef int(*OWCompareFunc)(const void *p_a, const void *p_b);
 typedef int(*OWFreeFunc)(const void *p_data);

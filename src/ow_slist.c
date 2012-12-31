@@ -160,7 +160,7 @@ ow_slist_find_custom(struct ow_slist *p_slist,
 }
 
 
-_Bool
+bool
 ow_slist_is_empty(const struct ow_slist *const p_slist)
 {
   return ow_slist_length(p_slist) == 0;

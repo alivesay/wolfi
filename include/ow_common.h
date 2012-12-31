@@ -4,6 +4,8 @@
 #include <limits.h>
 #include <stdint.h>
 
+#include "ow_types.h"
+
 
 #define OW_ARRAY_SIZE(a)   (sizeof(a) / sizeof(a[0])
 
@@ -15,7 +17,7 @@
 
 
 inline unsigned int
-next_power_of_two(unsigned int p_n, _Bool p_accept_current)
+next_power_of_two(unsigned int p_n, bool p_accept_current)
 {
   unsigned int i;
 
@@ -31,7 +33,7 @@ next_power_of_two(unsigned int p_n, _Bool p_accept_current)
 
 
 inline unsigned int
-prev_power_of_two(unsigned int p_n, _Bool p_accept_current)
+prev_power_of_two(unsigned int p_n, bool p_accept_current)
 {
   unsigned int i;
 
@@ -46,7 +48,7 @@ prev_power_of_two(unsigned int p_n, _Bool p_accept_current)
 }
 
 
-inline _Bool
+inline bool
 is_power_of_two(unsigned int p_n)
 {
   return p_n > 0 && (p_n & (p_n - 1)) == 0;
