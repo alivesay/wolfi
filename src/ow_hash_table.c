@@ -1,28 +1,60 @@
-#include "g2_hashtable.h"
-#include "g2_base.h"
 
-g2_hash_table_t* g2_hash_table_create(size_t p_size) {
-    g2_hash_table_t *table = NULL;
+#include <assert.h>
+#include <stdlib.h>
 
-    p_size = MAX(p_size, G2_DEFAULT_HASH_TABLE_SIZE);
+#include "ow_common.h"
+#include "ow_log.h"
+#include "ow_hash_table.h"
 
-    CALLOC(table, 1, g2_hash_table_t);
-    if (!table) goto _fail;
 
-    CALLOC(table->nodes, p_size, g2_hash_table_node_t*);
-    if (!table->nodes) goto _fail;
+static inline unsigned int
+_ow_hash_table_next_prime_modulus(const unsigned int p_n)
+{
+  static const unsigned int prime_modull[] = {
+             7u,
+            13u,
+            31u,
+            61u,
+           127u,
+           251u,
+           509u,
+          1021u,
+          2039u,
+          4093u,
+          8191u,
+         16381u,
+         32749u,
+         65521u,
+        131071u,
+        262139u,
+        524287u,
+       1048573u,
+       2097143u,
+       4194301u,
+       8388593u,
+      16777213u,
+      33554393u,
+      67108859u,
+     134217689u,
+     268435399u,
+     536870909u,
+    1073741789u,
+    2147483647u,
+    4294967291u
+  };
+ 
+  const unsigned int *i = prime_modull;
 
-    table->size = p_size;
+  do {
+    if (*i > p_i) return *i;
+  } while (4294967291u != *i++);
 
-    return table;
-
-_fail:
-    if (table->nodes) free(table->nodes);
-    if (table) free(table);
-    return NULL;
+  return p_i;
 }
 
-void g2_hash_table_release(g2_hash_table_t* p_table) {
+
+g2_hash_table_t* g2_hash_table_create(size_t p_size) {
+    table->size = p_size;
     size_t n;
     g2_hash_table_node_t *node = NULL, *oldnode = NULL;
 
@@ -30,8 +62,6 @@ void g2_hash_table_release(g2_hash_table_t* p_table) {
         node = p_table->nodes[n];
         while (node) {
             oldnode = node;
-            node = node->next;
-            free(oldnode);
         }
     }
     free(p_table->nodes);

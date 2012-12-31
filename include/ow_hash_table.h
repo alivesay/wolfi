@@ -3,7 +3,6 @@
 
 #include "ow_types.h"
 
-#define OW_HASH_TABLE_DEFAULT_SIZE 128
 
 struct _ow_hash_table_node {
     unsigned int                    key;
@@ -14,7 +13,7 @@ struct _ow_hash_table_node {
 struct _ow_hash_table {
     unsigned int                   length;
     struct _ow_hash_table_node_t   **nodes;
-    _Bool                          allows_duplicates;
+    bool                           allows_duplicates;
     OWHashFunc                     hash_func;
 };
 
