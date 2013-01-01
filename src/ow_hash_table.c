@@ -52,7 +52,8 @@ _ow_hash_table_next_prime_modulus(const uint32_t p_n)
 }
 
 
-g2_hash_table_t* g2_hash_table_create(size_t p_size) {
+void
+ow_hash_table_free(struct ow_hash_table p_table) {
     table->size = p_size;
     size_t n;
     g2_hash_table_node_t *node = NULL, *oldnode = NULL;
@@ -68,13 +69,14 @@ g2_hash_table_t* g2_hash_table_create(size_t p_size) {
     p_table = NULL;
 }
 
-uint32 g2_hash_table_insert(g2_hash_table_t* p_table, const char* p_key,
+
+int g2_hash_table_insert(g2_hash_table_t* p_table, const char* p_key,
 void *p_data) {
     return g2_hash_table_inserti(p_table, SuperFastHash(p_key,
 strlen(p_key)), p_data);
 }
 
-uint32 g2_hash_table_inserti(g2_hash_table_t* p_table, uint32 p_key, void
+int g2_hash_table_inserti(g2_hash_table_t* p_table, uint32 p_key, void
 *p_data) {
     g2_hash_table_node_t* node = NULL;
     size_t hash = p_key % p_table->size;
