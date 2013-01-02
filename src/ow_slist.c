@@ -1,7 +1,7 @@
 #include <assert.h>
 #include <stdlib.h>
 
-#include "ow_log.h"
+#include "ow_common.h"
 #include "ow_slist.h"
 
 
@@ -38,17 +38,16 @@ ow_slist_insert(struct ow_slist *const p_slist,
                 void *const p_data)
 {
   struct ow_slist *p;
-  
-  p = malloc(sizeof *p);
-  if (!p) goto _malloc_failed;
+
+  OW_MALLOC(p, sizeof *p);
+  if (!p) goto _error;
 
   p->data = p_data;
   p->next = p_slist;
 
   return p;
 
-_malloc_failed:
-  ow_log(OWLogLevel_EMERG, OW_LOG_BUILD_STR("malloc() failed"));
+_error:
   return NULL;
 }
 
@@ -60,8 +59,8 @@ ow_slist_insert_end(struct ow_slist *const p_slist,
   struct ow_slist *p;
   struct ow_slist *last;
 
-  p = malloc(sizeof *p);
-  if (!p) goto _malloc_failed;
+  OW_MALLOC(p, sizeof *p);
+  if (!p) goto _error;
 
   last = p_slist;
 
@@ -77,8 +76,7 @@ ow_slist_insert_end(struct ow_slist *const p_slist,
  
   return p;
 
-_malloc_failed:
-  ow_log(OWLogLevel_EMERG, OW_LOG_BUILD_STR("malloc() failed"));
+_error:
   return NULL;
 }
 
@@ -91,7 +89,7 @@ ow_slist_remove(struct ow_slist *p_slist,
   struct ow_slist *prev;
 
   p = p_slist;
-  preve = NULL;
+  prev = NULL;
 
   while (p && p->data != p_data) {
     prev = p;

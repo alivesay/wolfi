@@ -2,9 +2,25 @@
 #define OW_COMMON_H
 
 #include <limits.h>
+#include <stdlib.h>
 
+#include "ow_log.h"
 #include "ow_types.h"
 
+
+#define OW_MALLOC(var, size)                                         \
+  do {                                                               \
+    var = malloc(size);                                              \
+    if (!var)                                                        \
+      ow_log(OWLogLevel_EMERG, OW_LOG_BUILD_STR("malloc() failed")); \
+  }  while(0)
+
+#define OW_CALLOC(var, nmemb, size)                                  \
+  do {                                                               \
+    var = calloc(nmemb, size);                                       \
+    if (!var)                                                        \
+      ow_log(OWLogLevel_EMERG, OW_LOG_BUILD_STR("calloc() failed")); \
+  } while(0)
 
 #define OW_ARRAY_SIZE(a)   (sizeof(a) / sizeof(a[0])
 

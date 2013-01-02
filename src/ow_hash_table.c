@@ -52,33 +52,59 @@ _ow_hash_table_next_prime_modulus(const uint32_t p_n)
 }
 
 
+struct ow_hash_table*
+ow_hash_table_create(const uint32_t p_size)
+{
+  struct ow_hash_table *table;
+
+  OW_CALLOC(table, 1, sizeof *table);
+  if (!table) goto _error;
+
+  OW_CALLOC(table->nodes, 1, sizeof *table->nodes);
+  if (!table->nodes) goto _error;
+
+  table->size = p_size;
+
+  return table;
+
+_error:
+  free(table);
+  return NULL;
+}
+
+
 void
-ow_hash_table_free(struct ow_hash_table p_table) {
-    table->size = p_size;
-    size_t n;
-    g2_hash_table_node_t *node = NULL, *oldnode = NULL;
+ow_hash_table_free(struct ow_hash_table p_table)
+{
+  size_t n;
+  ow_hash_table_node_t *node = NULL, *oldnode = NULL;
 
-    for (n = 0; n < p_table->size; n++) {
-        node = p_table->nodes[n];
-        while (node) {
-            oldnode = node;
-        }
+  for (n = 0; n < p_table->size; n++) {
+    node = p_table->nodes[n];
+    while (node) {
+      oldnode = node;
     }
-    free(p_table->nodes);
-    free(p_table);
-    p_table = NULL;
+  }
+  free(p_table->nodes);
+  free(p_table);
 }
 
 
-int g2_hash_table_insert(g2_hash_table_t* p_table, const char* p_key,
-void *p_data) {
-    return g2_hash_table_inserti(p_table, SuperFastHash(p_key,
-strlen(p_key)), p_data);
+int
+ow_hash_table_insert(const ow_hash_table *const p_table,
+                     const char *const p_key,
+                     const void *const p_data)
+{
+  return ow_hash_table_inserti(p_table, SuperFastHash(p_key, strlen(p_key)), p_data);
 }
 
-int g2_hash_table_inserti(g2_hash_table_t* p_table, uint32 p_key, void
-*p_data) {
-    g2_hash_table_node_t* node = NULL;
+
+int
+ow_hash_table_inserti(const struct ow_hash_table *const p_table,
+                      const uint32 p_key,
+                      const void *const p_data)
+{
+    struct ow_hash_table_node *node = NULL;
     size_t hash = p_key % p_table->size;
 
     node = p_table->nodes[hash];
@@ -90,8 +116,8 @@ int g2_hash_table_inserti(g2_hash_table_t* p_table, uint32 p_key, void
         node = node->next;
     }
 
-    MALLOC(node, sizeof(g2_hash_table_node_t));
-    if (!node) goto _fail;
+    OW_MALLOC(node, sizeof *node);
+    if (!node) goto _error;
 
     node->key = p_key;
     node->data = p_data;
@@ -100,7 +126,7 @@ int g2_hash_table_inserti(g2_hash_table_t* p_table, uint32 p_key, void
 
     return 0;
 
-_fail:
+_error:
     return -1;
 }
 

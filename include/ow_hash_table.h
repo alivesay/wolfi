@@ -37,7 +37,7 @@ int                     ow_hash_table_insert    (const ow_hash_table *const p_ta
                                                  const char *const p_key,
                                                  const void *const p_data);
 
-int                     ow_hash_table_inserti   (ow_hash_table *p_table,
+int                     ow_hash_table_inserti   (const ow_hash_table *p_table,
                                                  const uint32_t p_key,
                                                  const void *const p_data);
 
