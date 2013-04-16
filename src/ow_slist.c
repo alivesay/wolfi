@@ -81,7 +81,7 @@ _error:
 }
 
 
-struct ow_slist*
+bool
 ow_slist_remove(struct ow_slist *p_slist,
                 const void *const p_data)
 {
@@ -103,13 +103,14 @@ ow_slist_remove(struct ow_slist *p_slist,
       p_slist = p->next;
 
     free(p);
+    return true;
   }
 
-  return p_slist;
+  return false;
 }
 
 
-struct ow_slist*
+bool
 ow_slist_remove_custom(struct ow_slist *p_list,
                        const void *const p_data,
                        const OWCompareFunc p_compare_func)
@@ -132,13 +133,14 @@ ow_slist_remove_custom(struct ow_slist *p_list,
       p_slist = p->next;
 
     free(p);
+    return true;
   }
 
-  return p_slist;
+  return false;
 }
 
 
-struct ow_slist*
+bool
 ow_slist_remove_node(struct ow_slist *p_slist,
                      const struct ow_slist *p_node)
 {
@@ -156,9 +158,10 @@ ow_slist_remove_node(struct ow_slist *p_slist,
   if (p) {
     if (prev) prev->next = p->next;
     free(p);
+    return true;
   }
 
-  return p_slist;
+  return false;
 }
 
 

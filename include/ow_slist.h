@@ -20,14 +20,14 @@ struct ow_slist*   ow_slist_insert        (struct ow_slist *const p_slist,
 struct ow_slist*   ow_slist_insert_end    (struct ow_slist *const p_slist,
                                            void *const p_data);
 
-struct ow_slist*   ow_slist_remove        (struct ow_slist *p_slist,
+bool               ow_slist_remove        (struct ow_slist *p_slist,
                                            const void *const p_data);
 
-struct ow_slist*   ow_slist_remove_custom (struct ow_slist *p_slist,
+bool               ow_slist_remove_custom (struct ow_slist *p_slist,
                                            const void *const p_data,
                                            const OWCompareFunc p_compare_func);
 
-struct ow_slist*   ow_slist_remove_node   (struct ow_slist *p_slist,
+bool               ow_slist_remove_node   (struct ow_slist *p_slist,
                                            struct ow_slist const *p_node);
 
 struct ow_slist*   ow_slist_find          (struct ow_slist *p_slist,
