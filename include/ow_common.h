@@ -59,7 +59,7 @@ prev_power_of_two(uint32_t p_n,
   if (!p_accept_current) p_n--;
 
   for (i = 0; i < sizeof(i) << 2; i <<= 1)
-    p_n |= (x >> i);
+    p_n |= (p_n >> i);
 
   return p_n - (p_n >> 1);
 }
