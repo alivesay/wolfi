@@ -110,6 +110,35 @@ ow_slist_remove(struct ow_slist *p_slist,
 
 
 struct ow_slist*
+ow_slist_remove_custom(struct ow_slist *p_list,
+                       const void *const p_data,
+                       const OWCompareFunc p_compare_func)
+{
+  struct ow_slist *p;
+  struct ow_slist *prev;
+
+  p = p_slist;
+  prev = NULL;
+
+  while (p && p_compare_func(p->data, p_data) != 0) {
+    prev = p;
+    p = p->next;
+  }
+
+  if (p) {
+    if (prev)
+      prev->next = p->next;
+    else
+      p_slist = p->next;
+
+    free(p);
+  }
+
+  return p_slist;
+}
+
+
+struct ow_slist*
 ow_slist_remove_node(struct ow_slist *p_slist,
                      const struct ow_slist *p_node)
 {
