@@ -2,19 +2,19 @@
 #define OW_HASH_TABLE_H
 
 #include "ow_common.h"
+#include "ow_slist.h"
 
 
-struct _ow_hash_table_node {
-    uint32_t                      key;
-    void*                         data;
-    struct _ow_hash_table_node*   next;
+struct _ow_hash_table_entry {
+  uint32_t   key;
+  void       *data;
 };
 
 struct ow_hash_table {
-    uint32_t                     length;
-    struct _ow_hash_table_node   **buckets;
-    bool                         allows_duplicates;
-    OWHashFunc                   hash_func;
+    uint32_t          bucket_count;
+    struct ow_slist   **buckets;
+    bool              allow_duplicates;
+    OWHashFunc        hash_func;
 };
 
 /*
@@ -29,32 +29,36 @@ typedef struct _ow_hash_table_iterator ow_hash_tableIterator;
 
 */
 
-struct ow_hash_table*   ow_hash_table_create    (const uint32_t p_length);
+struct ow_hash_table*   ow_hash_table_create    (const uint32_t p_bucket_count,
+                                                 const bool p_allow_duplicates);
 
 void                    ow_hash_table_free      (struct ow_hash_table *p_table);
 
-int                     ow_hash_table_insert    (const ow_hash_table *const p_table,
+bool                    ow_hash_table_insert     (const struct ow_hash_table *const p_table,
                                                  const char *const p_key,
                                                  const void *const p_data);
 
-int                     ow_hash_table_inserti   (const ow_hash_table *p_table,
+bool                    ow_hash_table_inserti    (const struct ow_hash_table *const p_table,
                                                  const uint32_t p_key,
                                                  const void *const p_data);
 
-void                    ow_hash_table_remove    (ow_hash_table *p_table,
+void                    ow_hash_table_remove    (const struct ow_hash_table *const p_table,
                                                  const char *const p_key);
 
-int                     ow_hash_table_removei   (ow_hash_table *p_table,
+void                    ow_hash_table_removei   (const struct ow_hash_table *const p_table,
                                                  const uint32_t p_key);
   
-void*                   ow_hash_table_get       (ow_hash_table *p_table,
-                                                 const char *p_key);
+void*                   ow_hash_table_get       (const struct ow_hash_table *const p_table,
+                                                 const char *const p_key);
 
-void*                   ow_hash_table_geti      (ow_hash_table *p_table,
+void*                   ow_hash_table_geti      (const struct ow_hash_table *const p_table,
                                                  const uint32_t p_key);
 
-int                     ow_hash_table_resize    (ow_hash_table *p_table,
+int                     ow_hash_table_resize    (struct ow_hash_table *p_table,
                                                  size_t p_size);
+
+int                     _ow_hash_table_entry_compare_func (const void *p_a,
+                                                          const void *p_b);
 
 
 #endif //H_G2_HASHTABLE
