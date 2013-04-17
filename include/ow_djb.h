@@ -14,12 +14,12 @@
 #define OW_DJB_HASH_SEED  5381
 
 inline uint32_t
-ow_djb_hash_str(const char *p_key)
+ow_djb_hash_str(const char *p_str)
 {
   uint32_t hash = OW_DJB_HASH_SEED;
   
-  while (*p_key)
-    hash = ((hash << 5) + hash) + *p_key++;
+  while (*p_str)
+    hash = ((hash << 5) + hash) + *p_str++;
 
   return hash;
 }
