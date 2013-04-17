@@ -4,7 +4,7 @@
 
 /* Daniel J. Bernstein's DJBX33/DJBX33A 
  *
- * 'str' functions require NULL-terminated p_key 
+ * 'str' functions require NULL-terminated p_str
  *
  * '16' functions have better distribution for letters w/ tables lengths <= 2^16
  *
