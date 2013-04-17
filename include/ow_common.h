@@ -22,6 +22,12 @@
       ow_log(OWLogLevel_EMERG, OW_LOG_BUILD_STR("calloc() failed")); \
   } while(0)
 
+#define OW_FREE(var) \
+  do {               \
+    free(var);       \
+    var = NULL;      \
+  } while(0)
+
 #define OW_ARRAY_SIZE(a)   (sizeof(a) / sizeof(a[0])
 
 #define OW_STRINGIZE_X(i)   #i
