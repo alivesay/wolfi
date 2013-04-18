@@ -4,7 +4,6 @@
 #include <string.h>
 
 #include "ow_log.h"
-#include "ow_djb.h"
 #include "ow_hash_table.h"
 
 
@@ -37,7 +36,8 @@ _ow_hash_table_next_prime_modulus(const uint32_t p_n)
 
 struct ow_hash_table*
 ow_hash_table_create(const uint32_t p_bucket_count,
-                     const bool p_allow_duplicates)
+                     const bool p_allow_duplicates,
+                     const OWHashFunc p_hash_func)
 {
   struct ow_hash_table *table;
 
@@ -49,6 +49,7 @@ ow_hash_table_create(const uint32_t p_bucket_count,
 
   table->allow_duplicates = p_allow_duplicates;
   table->bucket_count = p_bucket_count;
+  table->hash_func = p_hash_func;
 
   return table;
 
@@ -82,7 +83,7 @@ ow_hash_table_insert(const struct ow_hash_table *const p_table,
                      const char *const p_key,
                      void *const p_data)
 {
-  return ow_hash_table_inserti(p_table, ow_djb_hash_str_v2(p_key), p_data);
+  return ow_hash_table_inserti(p_table, p_table->hash_func(p_key), p_data);
 }
 
 
@@ -118,7 +119,7 @@ void
 ow_hash_table_remove(const struct ow_hash_table *const p_table,
                      const char *const p_key)
 {
-  ow_hash_table_removei(p_table, ow_djb_hash_str_v2(p_key));
+  ow_hash_table_removei(p_table, p_table->hash_func(p_key));
 }
 
 
@@ -155,7 +156,7 @@ void*
 ow_hash_table_get(const struct ow_hash_table *const p_table,
                   const char *const p_key)
 {
-  return ow_hash_table_geti(p_table, ow_djb_hash_str_v2(p_key));
+  return ow_hash_table_geti(p_table, p_table->hash_func(p_key));
 }
 
 void*

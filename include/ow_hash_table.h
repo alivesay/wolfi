@@ -31,7 +31,8 @@ typedef struct _ow_hash_table_iterator ow_hash_tableIterator;
 */
 
 struct ow_hash_table*   ow_hash_table_create    (const uint32_t p_bucket_count,
-                                                 const bool p_allow_duplicates);
+                                                 const bool p_allow_duplicates,
+                                                 const OWHashFunc p_hash_func);
 
 void                    ow_hash_table_free      (struct ow_hash_table *p_table);
 
