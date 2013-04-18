@@ -1,6 +1,8 @@
 #ifndef OW_DJB_H
 #define OW_DJB_H
 
+#include <stdint.h>
+
 
 /* Daniel J. Bernstein's DJBX33/DJBX33A 
  *

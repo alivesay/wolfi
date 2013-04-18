@@ -118,7 +118,7 @@ ow_slist_remove_custom(struct ow_slist *p_list,
   struct ow_slist *p;
   struct ow_slist *prev;
 
-  p = p_slist;
+  p = p_list;
   prev = NULL;
 
   while (p && p_compare_func(p->data, p_data) != 0) {
@@ -130,7 +130,7 @@ ow_slist_remove_custom(struct ow_slist *p_list,
     if (prev)
       prev->next = p->next;
     else
-      p_slist = p->next;
+      p_list = p->next;
 
     free(p);
     return true;

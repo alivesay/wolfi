@@ -18,8 +18,8 @@ enum OWLogLevel {
   OWLogLevelCount
 };
 
-inline void   ow_log   (enum OWLogLevel p_level,
-                        char const *const p_message);
+void   ow_log   (enum OWLogLevel p_level,
+                 char const *const p_message);
 
 
 #endif // OW_LOG_H

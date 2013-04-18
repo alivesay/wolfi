@@ -43,8 +43,6 @@ next_power_of_two(uint32_t p_n,
 {
   uint32_t i;
 
-  if (p_n < 0) return 0;
-
   if (!p_accept_current) p_n--;
   
   for (i = 0; i < sizeof(i) << 2; i <<= 1)
@@ -59,8 +57,6 @@ prev_power_of_two(uint32_t p_n,
                   bool p_accept_current)
 {
   uint32_t i;
-
-  if (p_n < 0) return 0;
 
   if (!p_accept_current) p_n--;
 

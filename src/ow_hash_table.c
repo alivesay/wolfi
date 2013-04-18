@@ -1,48 +1,31 @@
 
 #include <assert.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "ow_log.h"
+#include "ow_djb.h"
 #include "ow_hash_table.h"
+
+
+static const uint32_t prime_modull_count = 32; 
+
+static const uint32_t prime_modull[] =
+{
+  0u,          3u,          11u,         23u,         53u,
+  97u,         193u,        389u,        769u,        1543u,
+  3079u,       6151u,       12289u,      24593u,      49157u,
+  98317u,      196613u,     393241u,     786433u,     1572869u,
+  3145739u,    6291469u,    12582917u,   25165843u,   50331653u,
+  100663319u,  201326611u,  402653189u,  805306457u,  1610612741u,
+  3221225473u, 4294967291u
+};
 
 
 static inline uint32_t
 _ow_hash_table_next_prime_modulus(const uint32_t p_n)
 {
-  static const uint32_t prime_modull[] = {
-             7u,
-            13u,
-            31u,
-            61u,
-           127u,
-           251u,
-           509u,
-          1021u,
-          2039u,
-          4093u,
-          8191u,
-         16381u,
-         32749u,
-         65521u,
-        131071u,
-        262139u,
-        524287u,
-       1048573u,
-       2097143u,
-       4194301u,
-       8388593u,
-      16777213u,
-      33554393u,
-      67108859u,
-     134217689u,
-     268435399u,
-     536870909u,
-    1073741789u,
-    2147483647u,
-    4294967291u
-  };
- 
-  const uint32_t *i = prime_modull;
+ const uint32_t *i = prime_modull;
 
   do {
     if (*i > p_n) return *i;
@@ -70,8 +53,8 @@ ow_hash_table_create(const uint32_t p_bucket_count,
   return table;
 
 _error:
-  if (table) free(table->buckets);
-  free(table);
+  if (table) OW_FREE(table->buckets);
+  OW_FREE(table);
   return NULL;
 }
 
@@ -80,48 +63,53 @@ void
 ow_hash_table_free(struct ow_hash_table *p_table)
 {
   size_t n;
+  struct _ow_hash_table_entry *entry = NULL;
 
-  for (n = 0; n < p_table->bucket_count; ++n)
-    if (p_table->buckets[n]) ow_slist_free(p_table->buckets[n]);
+  for (n = 0; n < p_table->bucket_count; ++n) {
+    while ((entry = p_table->buckets[n])) {
+      p_table->buckets[n] = p_table->buckets[n]->next;
+      OW_FREE(entry);
+    }
+  }
 
-  free(p_table->buckets);
-  free(p_table);
+  OW_FREE(p_table->buckets);
+  OW_FREE(p_table);
 }
 
 
 bool
 ow_hash_table_insert(const struct ow_hash_table *const p_table,
                      const char *const p_key,
-                     const void *const p_data)
+                     void *const p_data)
 {
-  return ow_hash_table_inserti(p_table, SuperFastHash(p_key, strlen(p_key)), p_data);
+  return ow_hash_table_inserti(p_table, ow_djb_hash_str_v2(p_key), p_data);
 }
 
 
 bool
 ow_hash_table_inserti(const struct ow_hash_table *const p_table,
                       const uint32_t p_key,
-                      const void *const p_data)
+                      void *const p_data)
 {
   struct _ow_hash_table_entry *entry = NULL;
   size_t index = p_key % p_table->bucket_count;
 
   if (p_table->buckets[index] && !p_table->allow_duplicates)
-        ow_hash_table_removei(p_table, p_key);
+    ow_hash_table_removei(p_table, p_key);
 
   OW_CALLOC(entry, 1, sizeof *entry);
   if (!entry) goto _error;
 
   entry->key = p_key;
   entry->data = p_data;
+  entry->next = p_table->buckets[index];
 
-  p_table->buckets[index] = ow_slist_insert(p_table->buckets[index], entry);
-  if (!p_table->buckets[index]) goto _error;
-  
+  p_table->buckets[index] = entry;
+
   return true;
 
 _error:
-  free(entry);
+  OW_FREE(entry);
   return false;
 }
 
@@ -130,7 +118,7 @@ void
 ow_hash_table_remove(const struct ow_hash_table *const p_table,
                      const char *const p_key)
 {
-  ow_hash_table_removei(p_table, SuperFastHash(p_key, strlen(p_key)));
+  ow_hash_table_removei(p_table, ow_djb_hash_str_v2(p_key));
 }
 
 
@@ -139,17 +127,27 @@ ow_hash_table_removei(const struct ow_hash_table *const p_table,
                       const uint32_t p_key)
 {
   size_t index = p_key % p_table->bucket_count;
+  struct _ow_hash_table_entry *p = NULL, *prev = NULL;
 
   if (!p_table->buckets[index]) return;
+  
+  p = p_table->buckets[index];
 
-  ow_slist_remove_custom(p_table->buckets[index],
-                         p_key,
-                         &_ow_hash_table_entry_compare_func);
-                                                  
-  if (p_table->allow_duplicates) 
-    while(ow_slist_remove_custom(p_table->buckets[index],
-                                 p_key,
-                                 &_ow_hash_table_entry_compare_func));
+  do {
+    while (p && p->key != p_key) {
+      prev = p;
+      p = p->next;
+    }
+
+    if (p) {
+      if (prev)
+        prev->next = p->next;
+      else
+        p_table->buckets[index] = p->next;
+    
+      OW_FREE(p);
+    }
+  } while (p_table->allow_duplicates && p_table->buckets[index]);
 }
 
 
@@ -157,7 +155,7 @@ void*
 ow_hash_table_get(const struct ow_hash_table *const p_table,
                   const char *const p_key)
 {
-  return ow_hash_table_geti(p_table, SuperFastHash(p_key, strlen(p_key)));
+  return ow_hash_table_geti(p_table, ow_djb_hash_str_v2(p_key));
 }
 
 void*
@@ -166,19 +164,15 @@ ow_hash_table_geti(const struct ow_hash_table *p_table,
 {
   // TODO: handle allow_duplicates here?  always return iterator?
 
-  struct ow_slist *list_node = NULL;
   size_t index = p_key % p_table->bucket_count;
- 
-  if (!p_table->buckets[index]) return NULL;
+  struct _ow_hash_table_entry *p = NULL;
 
-  list_node = ow_slist_find_custom(p_table->buckets[index],
-                                   p_key,
-                                   _ow_hash_table_entry_compare_func);
-  
-  if (list_node)
-    return list_node->data;
-  else
-    return NULL;
+  p = p_table->buckets[index];
+
+  while (p && p->key != p_key)
+    p = p->next;
+   
+  return p ? p->data : NULL;
 }
 
 /*
@@ -200,7 +194,7 @@ uint32 g2_hash_table_resize(g2_hash_table_t *p_table, size_t p_size) {
         }
     }
 
-    free(p_table->nodes);
+    OW_FREE(p_table->nodes);
     p_table->size = new_table.size;
     p_table->nodes = new_table.nodes;
 
@@ -239,9 +233,3 @@ p_table->nodes[p_iterator->i])) { p_iterator->i++; }
 
 */
 
-int
-_ow_hash_table_entry_compare_func(const void *p_a,
-                                  const void *p_b)
-{
-  return (uint32_t)p_a == ((struct _ow_hash_table_entry*)p_b)->key;
-}

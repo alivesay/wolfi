@@ -3,7 +3,7 @@
 
 #include "ow_log.h"
 
-static char const OWLogLevelStr[OWLogLevelCount] = {
+static const char *const OWLogLevelStr[OWLogLevelCount] = {
   "EMERG",
   "ALERT",
   "CRIT",
@@ -14,8 +14,9 @@ static char const OWLogLevelStr[OWLogLevelCount] = {
   "DEBUG"
 };
 
-inline void
-ow_log(char const *const p_message)
+void
+ow_log(enum OWLogLevel p_level,
+       const char *const p_message)
 {
   fprintf(stderr, "%s: %s\n", OWLogLevelStr[p_level], p_message);
 }
