@@ -77,6 +77,7 @@ ow_hash_table_free(struct ow_hash_table *p_table)
 }
 
 
+struct ow_hash_table_entry*
 ow_hash_table_insert(const struct ow_hash_table *const p_table,
                      const char *const p_key,
                      void *const p_data)
@@ -102,11 +103,11 @@ ow_hash_table_insert(const struct ow_hash_table *const p_table,
 
   p_table->buckets[index] = entry;
 
-  return true;
+  return entry;
 
 _error:
   OW_FREE(entry);
-  return false;
+  return NULL;
 }
 
 

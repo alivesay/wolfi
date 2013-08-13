@@ -37,7 +37,8 @@ struct ow_hash_table*   ow_hash_table_create    (const uint32_t p_bucket_count,
 
 void                    ow_hash_table_free      (struct ow_hash_table *p_table);
 
-bool                    ow_hash_table_insert     (const struct ow_hash_table *const p_table,
+struct
+ow_hash_table_entry*    ow_hash_table_insert    (const struct ow_hash_table *const p_table,
                                                  const char *const p_key,
                                                  void *const p_data);
 
