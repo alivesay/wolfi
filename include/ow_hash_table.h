@@ -41,10 +41,6 @@ bool                    ow_hash_table_insert     (const struct ow_hash_table *co
                                                  const char *const p_key,
                                                  void *const p_data);
 
-bool                    ow_hash_table_inserti    (const struct ow_hash_table *const p_table,
-                                                 const uint32_t p_hash,
-                                                 void *const p_data);
-
 void                    ow_hash_table_remove    (const struct ow_hash_table *const p_table,
                                                  const char *const p_key);
 
