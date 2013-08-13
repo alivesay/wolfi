@@ -5,6 +5,7 @@
 
 #include "ow_log.h"
 #include "ow_hash_table.h"
+#include "ow_strings.h"
 
 static const uint32_t prime_modull_count = 32; 
 
@@ -33,6 +34,26 @@ ow_hash_table_next_prime_modulus(const uint32_t p_n)
 }
 
 
+static inline void
+_ow_hash_table_entry_free(struct ow_hash_table_entry *p_entry)
+{
+  if (p_entry) {
+    OW_FREE(p_entry->key);
+  }
+  OW_FREE(p_entry);
+}
+
+
+static inline void
+_ow_hash_table_free(struct ow_hash_table *p_table)
+{
+  if (p_table) {
+    OW_FREE(p_table->buckets);
+  }
+  OW_FREE(p_table);
+}
+
+
 struct ow_hash_table*
 ow_hash_table_create(const uint32_t p_bucket_count,
                      const bool p_allow_duplicates,
@@ -53,8 +74,7 @@ ow_hash_table_create(const uint32_t p_bucket_count,
   return table;
 
 _error:
-  if (table) OW_FREE(table->buckets);
-  OW_FREE(table);
+  _ow_hash_table_free(table);
   return NULL;
 }
 
@@ -68,12 +88,11 @@ ow_hash_table_free(struct ow_hash_table *p_table)
   for (n = 0; n < p_table->bucket_count; ++n) {
     while ((entry = p_table->buckets[n])) {
       p_table->buckets[n] = p_table->buckets[n]->next;
-      OW_FREE(entry);
+      _ow_hash_table_entry_free(entry);
     }
   }
 
-  OW_FREE(p_table->buckets);
-  OW_FREE(p_table);
+  _ow_hash_table_free(p_table);
 }
 
 
@@ -97,7 +116,7 @@ ow_hash_table_insert(const struct ow_hash_table *const p_table,
   if (!entry) goto _error;
 
   entry->hash = hash;
-  entry->key = p_key;
+  entry->key = ow_strdup(p_key);
   entry->data = p_data;
   entry->next = p_table->buckets[index];
 
@@ -106,7 +125,7 @@ ow_hash_table_insert(const struct ow_hash_table *const p_table,
   return entry;
 
 _error:
-  OW_FREE(entry);
+  _ow_hash_table_entry_free(entry);
   return NULL;
 }
 
@@ -136,11 +155,11 @@ ow_hash_table_removei(const struct ow_hash_table *const p_table,
     if (p) {
       if (prev) {
         prev->next = p->next;
-        OW_FREE(p);
+        _ow_hash_table_entry_free(p);
         p = prev->next;
       } else {
         p_table->buckets[index] = p->next;
-        OW_FREE(p);
+        _ow_hash_table_entry_free(p);
         p = p_table->buckets[index];
       }
     }

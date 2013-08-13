@@ -6,7 +6,7 @@
 
 struct ow_hash_table_entry {
   uint32_t                    hash;
-  const char                  *key;
+  char                        *key;
   void                        *data;
   struct ow_hash_table_entry  *next;
 };
