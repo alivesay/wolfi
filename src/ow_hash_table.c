@@ -6,7 +6,6 @@
 #include "ow_log.h"
 #include "ow_hash_table.h"
 
-
 static const uint32_t prime_modull_count = 32; 
 
 static const uint32_t prime_modull[] =
@@ -83,24 +82,21 @@ ow_hash_table_insert(const struct ow_hash_table *const p_table,
                      const char *const p_key,
                      void *const p_data)
 {
-  return ow_hash_table_inserti(p_table, p_table->hash_func(p_key), p_data);
-}
-
-
-bool
-ow_hash_table_inserti(const struct ow_hash_table *const p_table,
-                      const uint32_t p_key,
-                      void *const p_data)
-{
   struct _ow_hash_table_entry *entry = NULL;
-  size_t index = p_key % p_table->bucket_count;
+  uint32_t hash; 
+  size_t index;
+ 
+  hash = p_table->hash_func(p_key);
+  index = hash % p_table->bucket_count;
 
+  // TODO: allow optional overwrite vs error
   if (p_table->buckets[index] && !p_table->allow_duplicates)
-    ow_hash_table_removei(p_table, p_key);
+    ow_hash_table_removei(p_table, hash);
 
   OW_CALLOC(entry, 1, sizeof *entry);
   if (!entry) goto _error;
 
+  entry->hash = hash;
   entry->key = p_key;
   entry->data = p_data;
   entry->next = p_table->buckets[index];
@@ -125,30 +121,30 @@ ow_hash_table_remove(const struct ow_hash_table *const p_table,
 
 void
 ow_hash_table_removei(const struct ow_hash_table *const p_table,
-                      const uint32_t p_key)
+                      const uint32_t p_hash)
 {
-  size_t index = p_key % p_table->bucket_count;
+  size_t index = p_hash % p_table->bucket_count;
   struct _ow_hash_table_entry *p = NULL, *prev = NULL;
-
-  if (!p_table->buckets[index]) return;
   
   p = p_table->buckets[index];
-
   do {
-    while (p && p->key != p_key) {
+    while (p && p->hash != p_hash) {
       prev = p;
       p = p->next;
     }
-
-    if (p) {
-      if (prev)
-        prev->next = p->next;
-      else
-        p_table->buckets[index] = p->next;
     
-      OW_FREE(p);
+    if (p) {
+      if (prev) {
+        prev->next = p->next;
+        OW_FREE(p);
+        p = prev->next;
+      } else {
+        p_table->buckets[index] = p->next;
+        OW_FREE(p);
+        p = p_table->buckets[index];
+      }
     }
-  } while (p_table->allow_duplicates && p_table->buckets[index]);
+  } while (p_table->allow_duplicates && p);
 }
 
 
@@ -161,16 +157,16 @@ ow_hash_table_get(const struct ow_hash_table *const p_table,
 
 void*
 ow_hash_table_geti(const struct ow_hash_table *p_table,
-                   const uint32_t p_key)
+                   const uint32_t p_hash)
 {
   // TODO: handle allow_duplicates here?  always return iterator?
 
-  size_t index = p_key % p_table->bucket_count;
+  size_t index = p_hash % p_table->bucket_count;
   struct _ow_hash_table_entry *p = NULL;
 
   p = p_table->buckets[index];
 
-  while (p && p->key != p_key)
+  while (p && p->hash != p_hash)
     p = p->next;
    
   return p ? p->data : NULL;
