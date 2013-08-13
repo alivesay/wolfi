@@ -21,7 +21,7 @@ static const uint32_t prime_modull[] =
 
 
 static inline uint32_t
-_ow_hash_table_next_prime_modulus(const uint32_t p_n)
+ow_hash_table_next_prime_modulus(const uint32_t p_n)
 {
  const uint32_t *i = prime_modull;
 
@@ -63,7 +63,7 @@ void
 ow_hash_table_free(struct ow_hash_table *p_table)
 {
   size_t n;
-  struct _ow_hash_table_entry *entry = NULL;
+  struct ow_hash_table_entry *entry = NULL;
 
   for (n = 0; n < p_table->bucket_count; ++n) {
     while ((entry = p_table->buckets[n])) {
@@ -77,12 +77,11 @@ ow_hash_table_free(struct ow_hash_table *p_table)
 }
 
 
-bool
 ow_hash_table_insert(const struct ow_hash_table *const p_table,
                      const char *const p_key,
                      void *const p_data)
 {
-  struct _ow_hash_table_entry *entry = NULL;
+  struct ow_hash_table_entry *entry = NULL;
   uint32_t hash; 
   size_t index;
  
@@ -124,7 +123,7 @@ ow_hash_table_removei(const struct ow_hash_table *const p_table,
                       const uint32_t p_hash)
 {
   size_t index = p_hash % p_table->bucket_count;
-  struct _ow_hash_table_entry *p = NULL, *prev = NULL;
+  struct ow_hash_table_entry *p = NULL, *prev = NULL;
   
   p = p_table->buckets[index];
   do {
@@ -162,7 +161,7 @@ ow_hash_table_geti(const struct ow_hash_table *p_table,
   // TODO: handle allow_duplicates here?  always return iterator?
 
   size_t index = p_hash % p_table->bucket_count;
-  struct _ow_hash_table_entry *p = NULL;
+  struct ow_hash_table_entry *p = NULL;
 
   p = p_table->buckets[index];
 

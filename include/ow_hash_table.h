@@ -4,30 +4,30 @@
 #include "ow_common.h"
 
 
-struct _ow_hash_table_entry {
-  uint32_t                     hash;
-  const char                   *key;
-  void                         *data;
-  struct _ow_hash_table_entry  *next;
+struct ow_hash_table_entry {
+  uint32_t                    hash;
+  const char                  *key;
+  void                        *data;
+  struct ow_hash_table_entry  *next;
 };
 
 struct ow_hash_table {
     uint32_t                     bucket_count;
-    struct _ow_hash_table_entry  **buckets;
+    struct ow_hash_table_entry  **buckets;
     bool                         allow_duplicates;
     OWHashFunc                   hash_func;
     OWCompareFunc                compare_func;
 };
 
 /*
-struct _ow_hash_table_iterator {
+struct ow_hash_table_iterator {
     uint32                        i;
     struct ow_hash_table_node_t   *node;
     uint32                        hash;
     void*                         value;
 };
 
-typedef struct _ow_hash_table_iterator ow_hash_tableIterator;
+typedef struct ow_hash_table_iterator ow_hash_tableIterator;
 
 */
 
