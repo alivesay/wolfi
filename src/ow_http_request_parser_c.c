@@ -1117,7 +1117,7 @@ _match:
 #line 10 "ragel/ow_http_request_parser_c.rl"
 	{ 
     prev_header = p_http_request->headers;
-    p_http_request->headers = calloc(1, sizeof(*http_request->headers));
+    p_http_request->headers = calloc(1, sizeof(*p_http_request->headers));
     if (!p_http_request->headers) {
       OW_BUILD_LOG_STR("OW_HTTP_REQUEST_SET_FIELD malloc() failed")); 
       exit(EXIT_FAILURE);

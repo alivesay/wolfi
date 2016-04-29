@@ -57,5 +57,5 @@ void*                   ow_hash_table_geti      (const struct ow_hash_table *con
 int                     ow_hash_table_resize    (struct ow_hash_table *p_table,
                                                  size_t p_size);
 
-#endif //H_G2_HASHTABLE
+#endif // OW_HASHTABLE_H
 

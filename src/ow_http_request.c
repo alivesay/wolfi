@@ -7,6 +7,8 @@
 struct ow_http_request*
 ow_http_request_create(void)
 {
+  ow_http_request *p_http_request;
+
   p_http_request = calloc(1, sizeof *p_http_request);
   if (!p_http_request) goto _calloc_failed;
 
